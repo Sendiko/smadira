@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link href="/css/output.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+</head>
+<body class="bg-surface text-gray-900 font-sans antialiased overflow-x-hidden min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <nav class="bg-surface/70 backdrop-blur-[20px] border-b border-surface-variant/30 z-50 sticky top-0 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-24">
+                <a href="/" class="flex items-center gap-4 group">
+                    <div class="w-12 h-12 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary font-bold text-xl shadow-ambient group-hover:-translate-x-1 transition-all">
+                        <i class="uil uil-arrow-left"></i>
+                    </div>
+                    <span class="font-display font-bold text-xl tracking-tight text-gray-900 group-hover:text-primary transition-colors">Kembali ke Beranda</span>
+                </a>
+                <div class="hidden md:flex">
+                    <span class="px-6 py-2.5 bg-surface-container-low rounded-full text-xs font-bold uppercase tracking-widest text-primary shadow-sm">Tim OSIS SMA DIRA</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="bg-gradient-135 from-primary to-primary-container text-white pt-24 pb-32 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <h1 class="text-5xl md:text-6xl font-display font-extrabold tracking-tight mb-8 text-white">Struktur Pengurus OSIS</h1>
+            <p class="text-primary-dim max-w-2xl mx-auto text-xl font-medium leading-relaxed">Mengenal lebih dekat ujung tombak dan penggerak inisiatif SMA DIRA untuk masa bakti ini.</p>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <main class="flex-grow py-24 -mt-16 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+                <% if(pengurus && pengurus.length > 0) { %>
+                    <% pengurus.forEach(function(p, index) { %>
+                        <div class="bg-surface-container-lowest rounded-[2.5rem] p-8 shadow-ambient hover:shadow-ambient-hover transition-all duration-500 transform hover:-translate-y-2 flex flex-col group">
+                            
+                            <div class="flex justify-center mb-8">
+                                <% if(p.divisi === 'Inti') { %>
+                                    <span class="inline-flex items-center px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest bg-tertiary-fixed text-tertiary-container shadow-sm">
+                                        <i class="uil uil-star mr-2 text-base"></i> Pengurus Inti
+                                    </span>
+                                <% } else { %>
+                                    <span class="inline-flex items-center px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest bg-surface-container-low text-gray-500 shadow-inner">
+                                        Divisi <%= p.divisi %>
+                                    </span>
+                                <% } %>
+                            </div>
+
+                            <div class="relative w-32 h-32 mx-auto mb-8">
+                                <div class="absolute inset-0 bg-gradient-135 <%= p.divisi === 'Inti' ? 'from-tertiary-dim to-tertiary-container' : 'from-primary-dim to-primary-container' %> rounded-full blur-xl opacity-40 group-hover:opacity-70 transition-opacity duration-500"></div>
+                                <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(p.nama) %>&background=efedf3&color=00103e&size=150&bold=true" alt="<%= p.nama %>" class="relative w-full h-full rounded-full object-cover shadow-ambient border-[6px] border-surface-container-lowest">
+                            </div>
+                            
+                            <div class="text-center flex-grow">
+                                <h3 class="text-2xl font-display font-bold text-gray-900 mb-2 tracking-tight group-hover:text-primary transition-colors"><%= p.nama %></h3>
+                                <p class="text-primary font-bold text-sm tracking-wide uppercase"><%= p.jabatan %></p>
+                            </div>
+                            
+                            <div class="mt-8 pt-8 border-t border-surface-variant/20 flex justify-center gap-4 opacity-50 group-hover:opacity-100 transition-opacity">
+                                <button class="w-12 h-12 rounded-full bg-surface-container text-gray-500 hover:bg-primary hover:text-white transition-all flex items-center justify-center shadow-sm"><i class="uil uil-envelope text-xl"></i></button>
+                                <button class="w-12 h-12 rounded-full bg-surface-container text-gray-500 hover:bg-primary hover:text-white transition-all flex items-center justify-center shadow-sm"><i class="uil uil-instagram text-xl"></i></button>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <div class="col-span-full py-32 text-center bg-surface-container rounded-[3rem] shadow-inner">
+                        <div class="w-24 h-24 bg-surface-container-lowest text-gray-400 rounded-full flex items-center justify-center text-5xl mx-auto mb-6 shadow-ambient">
+                            <i class="uil uil-users-alt"></i>
+                        </div>
+                        <h3 class="text-3xl font-display font-bold text-gray-900 mb-4 tracking-tight">Data Pengurus Kosong</h3>
+                        <p class="text-gray-500 text-lg font-medium max-w-md mx-auto">Sistem belum menemukan data pengurus yang dapat ditampilkan secara publik.</p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </main>
+
+    <footer class="py-12 bg-surface-container-lowest text-center">
+        <p class="text-sm text-gray-500 font-medium tracking-wide">&copy; 2026 OSIS SMA DIRA. Didesain dengan gaya The Academic Vanguard.</p>
+    </footer>
+
+</body>
+</html>

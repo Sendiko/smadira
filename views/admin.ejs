@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> - Proker</title>
+    <link href="/css/output.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+</head>
+<body class="bg-surface text-gray-900 font-sans flex h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-72 bg-surface-container-lowest flex-col hidden md:flex z-20 shadow-ambient">
+        <div class="h-24 flex items-center px-10">
+            <div class="w-12 h-12 rounded-[1rem] bg-gradient-135 from-primary to-primary-container flex items-center justify-center text-white font-bold text-xl mr-4 shadow-ambient">
+                <i class="uil uil-setting"></i>
+            </div>
+            <span class="font-display font-bold text-xl tracking-tight text-gray-900">Admin Area</span>
+        </div>
+        
+        <nav class="flex-1 px-6 py-8 space-y-4 overflow-y-auto">
+            <p class="px-4 text-xs font-bold text-primary uppercase tracking-[0.2em] mb-6">Manajemen Basis Data</p>
+            
+            <!-- Active Tab -->
+            <a href="/admin" class="flex items-center px-6 py-4 bg-primary text-white rounded-[1.25rem] font-bold tracking-wide transition-all shadow-ambient group">
+                <i class="uil uil-clipboard-notes text-2xl mr-4 group-hover:scale-110 transition-transform"></i> Agenda Pulse
+            </a>
+
+            <!-- Inactive Tab -->
+            <a href="/admin/pengurus" class="flex items-center px-6 py-4 text-gray-500 hover:bg-surface-container hover:text-gray-900 rounded-[1.25rem] font-bold tracking-wide transition-colors group">
+                <i class="uil uil-users-alt text-2xl mr-4 group-hover:scale-110 transition-transform"></i> Manajemen Tim
+            </a>
+            
+            <a href="/" class="flex items-center px-6 py-4 text-gray-500 hover:bg-surface-container-low hover:text-gray-900 rounded-[1.25rem] font-bold tracking-wide transition-colors mt-12 group">
+                <i class="uil uil-arrow-left text-2xl mr-4 group-hover:-translate-x-2 transition-transform"></i> Kembali ke Depan
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-screen overflow-hidden bg-surface-container-low">
+        
+        <!-- Header -->
+        <header class="h-24 flex items-center justify-between px-12 bg-surface-container-lowest z-10 shadow-sm relative">
+            <div class="flex items-center">
+                <button class="md:hidden text-gray-500 hover:text-primary mr-6">
+                    <i class="uil uil-bars text-3xl"></i>
+                </button>
+                <h1 class="text-3xl font-display font-bold text-gray-900 tracking-tight">Council Pulse Editor</h1>
+            </div>
+            
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-4 bg-surface-container px-6 py-2.5 rounded-full">
+                    <span class="text-sm font-bold text-gray-700 tracking-wide">Administrator</span>
+                    <i class="uil uil-user-circle text-2xl text-primary"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="flex-1 overflow-y-auto p-12">
+            <div class="max-w-5xl mx-auto space-y-12">
+                
+                <!-- Form Area -->
+                <div class="bg-surface-container-lowest rounded-[2.5rem] shadow-ambient-hover p-10">
+                    <div class="flex items-center gap-4 mb-10">
+                        <div class="w-12 h-12 rounded-full bg-primary-fixed text-primary flex items-center justify-center">
+                            <i class="uil uil-plus text-2xl font-bold"></i>
+                        </div>
+                        <h2 class="text-2xl font-display font-bold text-gray-900 tracking-tight">Draft Agenda Baru</h2>
+                    </div>
+                    
+                    <form action="/admin/proker" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-3">
+                            <label for="judul" class="block text-sm font-bold text-gray-700 uppercase tracking-widest pl-2">Judul Agenda</label>
+                            <input type="text" id="judul" name="judul" required placeholder="Contoh: Class Meeting" class="w-full px-6 py-4 bg-surface-container-low border-2 border-transparent rounded-[1.5rem] focus:border-surface-tint/40 focus:bg-surface-container-lowest outline-none transition-all font-medium text-gray-900 shadow-inner">
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <label for="tanggal_pelaksanaan" class="block text-sm font-bold text-gray-700 uppercase tracking-widest pl-2">Tanggal Eksekusi</label>
+                            <input type="date" id="tanggal_pelaksanaan" name="tanggal_pelaksanaan" required class="w-full px-6 py-4 bg-surface-container-low border-2 border-transparent rounded-[1.5rem] focus:border-surface-tint/40 focus:bg-surface-container-lowest outline-none transition-all font-medium text-gray-900 shadow-inner">
+                        </div>
+                        
+                        <div class="col-span-1 md:col-span-2 space-y-3">
+                            <label for="deskripsi" class="block text-sm font-bold text-gray-700 uppercase tracking-widest pl-2">Konteks & Deksripsi</label>
+                            <textarea id="deskripsi" name="deskripsi" rows="3" required placeholder="Masukkan detail operasional untuk arsip ini..." class="w-full px-6 py-4 bg-surface-container-low border-2 border-transparent rounded-[1.5rem] focus:border-surface-tint/40 focus:bg-surface-container-lowest outline-none transition-all font-medium text-gray-900 shadow-inner resize-none"></textarea>
+                        </div>
+                        
+                        <div class="col-span-1 md:col-span-2 flex justify-end mt-4">
+                            <!-- Gradient Primary Button -->
+                            <button type="submit" class="px-10 py-5 bg-gradient-135 from-primary to-primary-container hover:shadow-ambient-hover text-white font-bold uppercase tracking-widest text-sm rounded-full transition-all flex items-center gap-3 hover:-translate-y-1">
+                                Publikasikan ke Pulse <i class="uil uil-message"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Database Feed -->
+                <div>
+                    <div class="flex items-center justify-between mb-8 pl-4">
+                        <h2 class="text-2xl font-display font-bold text-gray-900 tracking-tight">Katalog Agenda Berjalan</h2>
+                        <span class="px-4 py-2 bg-primary-fixed text-primary text-xs font-bold uppercase tracking-widest rounded-full"><%= prokers.length %> Tersimpan</span>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <% if(prokers && prokers.length > 0) { %>
+                            <% prokers.forEach(function(proker) { %>
+                                <div class="bg-surface-container-lowest rounded-[2rem] p-8 shadow-ambient flex flex-col md:flex-row gap-8 items-center group transition-transform hover:-translate-y-1">
+                                    <div class="flex-grow w-full md:w-auto">
+                                        <div class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold text-tertiary-container bg-tertiary-fixed tracking-widest uppercase mb-4">
+                                            <%= proker.tanggal_pelaksanaan %>
+                                        </div>
+                                        <h3 class="text-2xl font-display font-bold text-gray-900 mb-2 tracking-tight group-hover:text-primary transition-colors"><%= proker.judul %></h3>
+                                        <p class="text-gray-600 font-medium truncate max-w-2xl"><%= proker.deskripsi %></p>
+                                    </div>
+                                    
+                                    <div class="shrink-0 flex items-center gap-4 font-mono text-gray-400 text-sm">
+                                        <span>ID-<%= proker.id.toString().padStart(4, '0') %></span>
+                                        <form action="/admin/proker/delete/<%= proker.id %>" method="POST" class="inline" onsubmit="return confirm('Sistem akan menghapus agenda ini secara permanen. Lanjutkan?');">
+                                            <button type="submit" class="w-14 h-14 rounded-full bg-surface-container text-gray-500 hover:bg-error hover:text-white hover:shadow-lg transition-all flex items-center justify-center">
+                                                <i class="uil uil-trash-alt text-2xl"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        <% } else { %>
+                            <div class="py-24 text-center bg-surface-container-lowest rounded-[2.5rem] shadow-ambient">
+                                <div class="text-6xl mb-6 text-surface-variant"><i class="uil uil-inbox"></i></div>
+                                <p class="text-2xl font-display font-bold text-gray-500 mb-2 tracking-tight">Katalog Kosong</p>
+                                <p class="text-gray-400 font-medium">Buat draf agenda pertamamu melalui editor di atas.</p>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
