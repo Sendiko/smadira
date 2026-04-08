@@ -180,7 +180,7 @@
                             <!-- Metadata -->
                             <div
                                 class="mb-6 inline-flex items-center px-4 py-2 bg-tertiary-fixed text-tertiary-container text-xs font-bold uppercase tracking-widest rounded-full">
-                                <%= proker.tanggal_pelaksanaan %>
+                                <%= new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long' }).format(new Date(proker.tanggal_pelaksanaan)) %>, <%= new Date(proker.tanggal_pelaksanaan).getFullYear() %>
                             </div>
 
                             <!-- Hierarchy High Contrast: Title -->

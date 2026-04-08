@@ -21,9 +21,9 @@ app.get('/', (req, res) => {
             console.error(err.message);
             prokers = [];
         }
-        res.render('index', { 
-            title: 'OSIS SMA DIRA', 
-            prokers: prokers 
+        res.render('index', {
+            title: 'OSIS SMA DIRA',
+            prokers: prokers
         });
     });
 });
@@ -34,9 +34,9 @@ app.get('/struktur', (req, res) => {
             console.error(err.message);
             pengurus = [];
         }
-        res.render('struktur', { 
-            title: 'Struktur Organisasi - OSIS SMA DIRA', 
-            pengurus: pengurus 
+        res.render('struktur', {
+            title: 'Struktur Organisasi - OSIS SMA DIRA',
+            pengurus: pengurus
         });
     });
 });
@@ -47,9 +47,9 @@ app.get('/agenda', (req, res) => {
             console.error(err.message);
             prokers = [];
         }
-        res.render('agenda', { 
-            title: 'Semua Agenda - OSIS SMA DIRA', 
-            prokers: prokers 
+        res.render('agenda', {
+            title: 'Semua Agenda - OSIS SMA DIRA',
+            prokers: prokers
         });
     });
 });
@@ -61,17 +61,17 @@ app.get('/admin', (req, res) => {
             console.error(err.message);
             prokers = [];
         }
-        res.render('admin', { 
-            title: 'Manajemen Data Proker - OSIS SMA DIRA', 
-            prokers: prokers 
+        res.render('admin', {
+            title: 'Manajemen Data Proker - OSIS SMA DIRA',
+            prokers: prokers
         });
     });
 });
 
 app.post('/admin/proker', (req, res) => {
     const { judul, deskripsi, tanggal_pelaksanaan } = req.body;
-    db.run("INSERT INTO proker (judul, deskripsi, tanggal_pelaksanaan) VALUES (?, ?, ?)", 
-        [judul, deskripsi, tanggal_pelaksanaan], function(err) {
+    db.run("INSERT INTO proker (judul, deskripsi, tanggal_pelaksanaan) VALUES (?, ?, ?)",
+        [judul, deskripsi, tanggal_pelaksanaan], function (err) {
             if (err) {
                 console.error("Error inserting proker:", err.message);
             }
@@ -82,7 +82,7 @@ app.post('/admin/proker', (req, res) => {
 
 app.post('/admin/proker/delete/:id', (req, res) => {
     const id = req.params.id;
-    db.run("DELETE FROM proker WHERE id = ?", id, function(err) {
+    db.run("DELETE FROM proker WHERE id = ?", id, function (err) {
         if (err) {
             console.error("Error deleting proker:", err.message);
         }
@@ -97,17 +97,17 @@ app.get('/admin/pengurus', (req, res) => {
             console.error(err.message);
             pengurus = [];
         }
-        res.render('admin_pengurus', { 
-            title: 'Manajemen Anggota - OSIS SMA DIRA', 
-            pengurus: pengurus 
+        res.render('admin_pengurus', {
+            title: 'Manajemen Anggota - OSIS SMA DIRA',
+            pengurus: pengurus
         });
     });
 });
 
 app.post('/admin/pengurus', (req, res) => {
     const { nama, divisi, jabatan } = req.body;
-    db.run("INSERT INTO pengurus (nama, divisi, jabatan) VALUES (?, ?, ?)", 
-        [nama, divisi, jabatan], function(err) {
+    db.run("INSERT INTO pengurus (nama, divisi, jabatan) VALUES (?, ?, ?)",
+        [nama, divisi, jabatan], function (err) {
             if (err) {
                 console.error("Error inserting pengurus:", err.message);
             }
@@ -118,12 +118,40 @@ app.post('/admin/pengurus', (req, res) => {
 
 app.post('/admin/pengurus/delete/:id', (req, res) => {
     const id = req.params.id;
-    db.run("DELETE FROM pengurus WHERE id = ?", id, function(err) {
+    db.run("DELETE FROM pengurus WHERE id = ?", id, function (err) {
         if (err) {
             console.error("Error deleting pengurus:", err.message);
         }
         res.redirect('/admin/pengurus');
     });
+});
+
+// Start server
+app.get('/admin/pengurus/edit/:id', (req, res) => {
+    const id = req.params.id;
+    db.get("SELECT * FROM pengurus WHERE id = ?", [id], (err, row) => {
+        if (err || !row) {
+            console.error(err ? err.message : "Pengurus not found");
+            return res.redirect('/admin/pengurus');
+        }
+        res.render('admin_pengurus_edit', {
+            title: 'Edit Anggota - OSIS SMA DIRA',
+            pengurus: row
+        });
+    });
+});
+
+app.post('/admin/pengurus/edit/:id', (req, res) => {
+    const id = req.params.id;
+    const { nama, divisi, jabatan } = req.body;
+    db.run("UPDATE pengurus SET nama = ?, divisi = ?, jabatan = ? WHERE id = ?",
+        [nama, divisi, jabatan, id], function (err) {
+            if (err) {
+                console.error("Error updating pengurus:", err.message);
+            }
+            res.redirect('/admin/pengurus');
+        }
+    );
 });
 
 // Start server
