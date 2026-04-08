@@ -1,54 +1,65 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %> - Pegurus</title>
+    <title>
+        <%= title %> - Pegurus
+    </title>
     <link href="/css/output.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 </head>
+
 <body class="bg-surface text-gray-900 font-sans flex h-screen overflow-hidden">
 
     <!-- Sidebar -->
     <aside class="w-72 bg-surface-container-lowest flex-col hidden md:flex z-20 shadow-ambient">
         <div class="h-24 flex items-center px-10">
-            <div class="w-12 h-12 rounded-[1rem] bg-gradient-135 from-primary to-primary-container flex items-center justify-center text-white font-bold text-xl mr-4 shadow-ambient">
+            <div
+                class="w-12 h-12 rounded-[1rem] bg-gradient-135 from-primary to-primary-container flex items-center justify-center text-white font-bold text-xl mr-4 shadow-ambient">
                 <i class="uil uil-setting"></i>
             </div>
             <span class="font-display font-bold text-xl tracking-tight text-gray-900">Admin Area</span>
         </div>
-        
+
         <nav class="flex-1 px-6 py-8 space-y-4 overflow-y-auto">
             <p class="px-4 text-xs font-bold text-primary uppercase tracking-[0.2em] mb-6">Manajemen Basis Data</p>
-            
+
             <!-- Inactive Tab -->
-            <a href="/admin" class="flex items-center px-6 py-4 text-gray-500 hover:bg-surface-container hover:text-gray-900 rounded-[1.25rem] font-bold tracking-wide transition-colors group">
-                <i class="uil uil-clipboard-notes text-2xl mr-4 group-hover:scale-110 transition-transform"></i> Agenda Pulse
+            <a href="/admin"
+                class="flex items-center px-6 py-4 text-gray-500 hover:bg-surface-container hover:text-gray-900 rounded-[1.25rem] font-bold tracking-wide transition-colors group">
+                <i class="uil uil-clipboard-notes text-2xl mr-4 group-hover:scale-110 transition-transform"></i> Agenda
+                Pulse
             </a>
 
             <!-- Active Tab -->
-            <a href="/admin/pengurus" class="flex items-center px-6 py-4 bg-primary text-white rounded-[1.25rem] font-bold tracking-wide transition-all shadow-ambient group">
+            <a href="/admin/pengurus"
+                class="flex items-center px-6 py-4 bg-primary text-white rounded-[1.25rem] font-bold tracking-wide transition-all shadow-ambient group">
                 <i class="uil uil-users-alt text-2xl mr-4 group-hover:scale-110 transition-transform"></i> Manajemen Tim
             </a>
-            
-            <a href="/" class="flex items-center px-6 py-4 text-gray-500 hover:bg-surface-container-low hover:text-gray-900 rounded-[1.25rem] font-bold tracking-wide transition-colors mt-12 group">
-                <i class="uil uil-arrow-left text-2xl mr-4 group-hover:-translate-x-2 transition-transform"></i> Kembali ke Depan
+
+            <a href="/"
+                class="flex items-center px-6 py-4 text-gray-500 hover:bg-surface-container-low hover:text-gray-900 rounded-[1.25rem] font-bold tracking-wide transition-colors mt-12 group">
+                <i class="uil uil-arrow-left text-2xl mr-4 group-hover:-translate-x-2 transition-transform"></i> Kembali
+                ke Depan
             </a>
         </nav>
     </aside>
 
     <!-- Main Content -->
     <main class="flex-1 flex flex-col h-screen overflow-hidden bg-surface-container-low">
-        
+
         <!-- Header -->
-        <header class="h-24 flex items-center justify-between px-12 bg-surface-container-lowest z-10 shadow-sm relative">
+        <header
+            class="h-24 flex items-center justify-between px-12 bg-surface-container-lowest z-10 shadow-sm relative">
             <div class="flex items-center">
                 <button class="md:hidden text-gray-500 hover:text-primary mr-6">
                     <i class="uil uil-bars text-3xl"></i>
                 </button>
                 <h1 class="text-3xl font-display font-bold text-gray-900 tracking-tight">Katalog Tim OSIS</h1>
             </div>
-            
+
             <div class="flex items-center gap-6">
                 <div class="flex items-center gap-4 bg-surface-container px-6 py-2.5 rounded-full">
                     <span class="text-sm font-bold text-gray-700 tracking-wide">Administrator</span>
@@ -59,36 +70,47 @@
 
         <!-- Content Area -->
         <div class="flex-1 overflow-y-auto p-12">
-            <div class="max-w-5xl mx-auto space-y-12">
-                
+            <div class="mx-auto space-y-12">
+
                 <!-- Form Area -->
                 <div class="bg-surface-container-lowest rounded-[2.5rem] shadow-ambient-hover p-10">
                     <div class="flex items-center gap-4 mb-10">
-                        <div class="w-12 h-12 rounded-full bg-primary-fixed text-primary flex items-center justify-center">
+                        <div
+                            class="w-12 h-12 rounded-full bg-primary-fixed text-primary flex items-center justify-center">
                             <i class="uil uil-user-plus text-2xl font-bold"></i>
                         </div>
                         <h2 class="text-2xl font-display font-bold text-gray-900 tracking-tight">Rekrutmen Tim Baru</h2>
                     </div>
-                    
+
                     <form action="/admin/pengurus" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="space-y-3">
-                            <label for="nama" class="block text-sm font-bold text-gray-700 uppercase tracking-widest pl-2">Nama Lengkap</label>
-                            <input type="text" id="nama" name="nama" required placeholder="Contoh: Raden Patah" class="w-full px-6 py-4 bg-surface-container-low border-2 border-transparent rounded-[1.5rem] focus:border-surface-tint/40 focus:bg-surface-container-lowest outline-none transition-all font-medium text-gray-900 shadow-inner">
+                            <label for="nama"
+                                class="block text-sm font-bold text-gray-700 uppercase tracking-widest pl-2">Nama
+                                Lengkap</label>
+                            <input type="text" id="nama" name="nama" required placeholder="Contoh: Raden Patah"
+                                class="w-full px-6 py-4 bg-surface-container-low border-2 border-transparent rounded-[1.5rem] focus:border-surface-tint/40 focus:bg-surface-container-lowest outline-none transition-all font-medium text-gray-900 shadow-inner">
                         </div>
-                        
+
                         <div class="space-y-3">
-                            <label for="divisi" class="block text-sm font-bold text-gray-700 uppercase tracking-widest pl-2">Divisi Organisasi</label>
-                            <input type="text" id="divisi" name="divisi" required placeholder="Contoh: Inti, Humas" class="w-full px-6 py-4 bg-surface-container-low border-2 border-transparent rounded-[1.5rem] focus:border-surface-tint/40 focus:bg-surface-container-lowest outline-none transition-all font-medium text-gray-900 shadow-inner">
+                            <label for="divisi"
+                                class="block text-sm font-bold text-gray-700 uppercase tracking-widest pl-2">Divisi
+                                Organisasi</label>
+                            <input type="text" id="divisi" name="divisi" required placeholder="Contoh: Inti, Humas"
+                                class="w-full px-6 py-4 bg-surface-container-low border-2 border-transparent rounded-[1.5rem] focus:border-surface-tint/40 focus:bg-surface-container-lowest outline-none transition-all font-medium text-gray-900 shadow-inner">
                         </div>
-                        
+
                         <div class="col-span-1 md:col-span-2 space-y-3">
-                            <label for="jabatan" class="block text-sm font-bold text-gray-700 uppercase tracking-widest pl-2">Jabatan (Fungsional)</label>
-                            <input type="text" id="jabatan" name="jabatan" required placeholder="Contoh: Ketua, Anggota" class="w-full px-6 py-4 bg-surface-container-low border-2 border-transparent rounded-[1.5rem] focus:border-surface-tint/40 focus:bg-surface-container-lowest outline-none transition-all font-medium text-gray-900 shadow-inner">
+                            <label for="jabatan"
+                                class="block text-sm font-bold text-gray-700 uppercase tracking-widest pl-2">Jabatan
+                                (Fungsional)</label>
+                            <input type="text" id="jabatan" name="jabatan" required placeholder="Contoh: Ketua, Anggota"
+                                class="w-full px-6 py-4 bg-surface-container-low border-2 border-transparent rounded-[1.5rem] focus:border-surface-tint/40 focus:bg-surface-container-lowest outline-none transition-all font-medium text-gray-900 shadow-inner">
                         </div>
-                        
+
                         <div class="col-span-1 md:col-span-2 flex justify-end mt-4">
                             <!-- Gradient Primary Button -->
-                            <button type="submit" class="px-10 py-5 bg-gradient-135 from-primary to-primary-container hover:shadow-ambient-hover text-white font-bold uppercase tracking-widest text-sm rounded-full transition-all flex items-center gap-3 hover:-translate-y-1">
+                            <button type="submit"
+                                class="px-10 py-5 bg-gradient-135 from-primary to-primary-container hover:shadow-ambient-hover text-white font-bold uppercase tracking-widest text-sm rounded-full transition-all flex items-center gap-3 hover:-translate-y-1">
                                 Daftarkan Anggota <i class="uil uil-plus-circle"></i>
                             </button>
                         </div>
@@ -98,40 +120,63 @@
                 <!-- Database Feed -->
                 <div>
                     <div class="flex items-center justify-between mb-8 pl-4">
-                        <h2 class="text-2xl font-display font-bold text-gray-900 tracking-tight">Daftar Pengurus Terdaftar</h2>
-                        <span class="px-4 py-2 bg-primary-fixed text-primary text-xs font-bold uppercase tracking-widest rounded-full"><%= pengurus.length %> Terdaftar</span>
+                        <h2 class="text-2xl font-display font-bold text-gray-900 tracking-tight">Daftar Pengurus
+                            Terdaftar</h2>
+                        <span
+                            class="px-4 py-2 bg-primary-fixed text-primary text-xs font-bold uppercase tracking-widest rounded-full">
+                            <%= pengurus.length %> Terdaftar
+                        </span>
                     </div>
-                    
+
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        <% if(pengurus && pengurus.length > 0) { %>
+                        <% if(pengurus && pengurus.length> 0) { %>
                             <% pengurus.forEach(function(p) { %>
-                                <div class="bg-surface-container-lowest rounded-[2rem] p-8 shadow-ambient flex gap-6 items-center group transition-transform hover:-translate-y-2 hover:shadow-ambient-hover">
+                                <div
+                                    class="bg-surface-container-lowest rounded-[2rem] p-8 shadow-ambient flex gap-6 items-center group transition-transform hover:-translate-y-2 hover:shadow-ambient-hover">
                                     <div class="w-20 h-20 rounded-[1.25rem] overflow-hidden shrink-0 shadow-inner">
-                                       <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(p.nama) %>&background=efedf3&color=00103e&size=150" class="w-full h-full object-cover">
+                                        <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(p.nama) %>&background=efedf3&color=00103e&size=150"
+                                            class="w-full h-full object-cover">
                                     </div>
                                     <div class="flex-grow">
-                                        <div class="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-bold text-tertiary-container bg-tertiary-fixed tracking-widest uppercase mb-3 shadow-sm">
+                                        <div
+                                            class="inline-flex items-center px-4 py-2 rounded-full text-xs font-bold text-tertiary-container bg-tertiary-fixed tracking-widest uppercase mb-3 shadow-sm whitespace-nowrap overflow-hidden text-ellipsis">
                                             <%= p.divisi %>
                                         </div>
-                                        <h3 class="text-xl font-display font-bold text-gray-900 tracking-tight leading-tight group-hover:text-primary transition-colors"><%= p.nama %></h3>
-                                        <p class="text-sm text-primary/70 font-bold uppercase tracking-wider mt-1"><%= p.jabatan %></p>
+                                        <h3
+                                            class="text-2xl font-display font-bold text-gray-900 tracking-tight leading-tight group-hover:text-primary transition-colors">
+                                            <%= p.nama %>
+                                        </h3>
+                                        <p class="text-base text-primary/70 font-bold uppercase tracking-wider mt-1">
+                                            <%= p.jabatan %>
+                                        </p>
                                     </div>
-                                    <div class="shrink-0 self-start">
-                                        <form action="/admin/pengurus/delete/<%= p.id %>" method="POST" class="inline" onsubmit="return confirm('Menghapus data orang ini secara permanen. Lanjutkan?');">
-                                            <button type="submit" class="w-12 h-12 rounded-full bg-surface-container-low text-gray-400 hover:bg-error hover:text-white hover:shadow-lg transition-all flex items-center justify-center">
+                                    <div class="shrink-0 self-start flex gap-2">
+                                        <a href="/admin/pengurus/edit/<%= p.id %>"
+                                            class="w-12 h-12 rounded-full bg-surface-container-low text-gray-400 hover:bg-primary hover:text-white hover:shadow-lg transition-all flex items-center justify-center">
+                                            <i class="uil uil-pen text-xl"></i>
+                                        </a>
+                                        <form action="/admin/pengurus/delete/<%= p.id %>" method="POST" class="inline"
+                                            onsubmit="return confirm('Menghapus data orang ini secara permanen. Lanjutkan?');">
+                                            <button type="submit"
+                                                class="w-12 h-12 rounded-full bg-surface-container-low text-gray-400 hover:bg-error hover:text-white hover:shadow-lg transition-all flex items-center justify-center">
                                                 <i class="uil uil-trash-alt text-xl"></i>
                                             </button>
                                         </form>
                                     </div>
                                 </div>
-                            <% }); %>
-                        <% } else { %>
-                            <div class="col-span-2 py-24 text-center bg-surface-container-lowest rounded-[2.5rem] shadow-ambient">
-                                <div class="text-6xl mb-6 text-surface-variant"><i class="uil uil-folder-info"></i></div>
-                                <p class="text-2xl font-display font-bold text-gray-500 mb-2 tracking-tight">Anggota Kosong</p>
-                                <p class="text-gray-400 font-medium">Sistem belum merekam data anggota internal.</p>
-                            </div>
-                        <% } %>
+                                <% }); %>
+                                    <% } else { %>
+                                        <div
+                                            class="col-span-2 py-24 text-center bg-surface-container-lowest rounded-[2.5rem] shadow-ambient">
+                                            <div class="text-6xl mb-6 text-surface-variant"><i
+                                                    class="uil uil-folder-info"></i></div>
+                                            <p
+                                                class="text-2xl font-display font-bold text-gray-500 mb-2 tracking-tight">
+                                                Anggota Kosong</p>
+                                            <p class="text-gray-400 font-medium">Sistem belum merekam data anggota
+                                                internal.</p>
+                                        </div>
+                                        <% } %>
                     </div>
                 </div>
 
@@ -140,4 +185,5 @@
     </main>
 
 </body>
+
 </html>

@@ -44,11 +44,11 @@
                             
                             <div class="flex justify-center mb-8">
                                 <% if(p.divisi === 'Inti') { %>
-                                    <span class="inline-flex items-center px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest bg-tertiary-fixed text-tertiary-container shadow-sm">
+                                    <span class="inline-flex items-center px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest bg-tertiary-fixed text-tertiary-container shadow-sm whitespace-nowrap overflow-hidden text-ellipsis">
                                         <i class="uil uil-star mr-2 text-base"></i> Pengurus Inti
                                     </span>
                                 <% } else { %>
-                                    <span class="inline-flex items-center px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest bg-surface-container-low text-gray-500 shadow-inner">
+                                    <span class="inline-flex items-center px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest bg-surface-container-low text-gray-500 shadow-inner whitespace-nowrap overflow-hidden text-ellipsis">
                                         Divisi <%= p.divisi %>
                                     </span>
                                 <% } %>
