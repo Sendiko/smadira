@@ -1,5 +1,7 @@
 const express = require('express');
 const path = require('path');
+const session = require('express-session');
+const bcrypt = require('bcryptjs');
 const db = require('./config/database');
 
 const app = express();
@@ -13,6 +15,21 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+    secret: 'osis-secret-key-1234',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false } // Set to true if using HTTPS
+}));
+
+// Auth Middleware
+const requireAuth = (req, res, next) => {
+    if (req.session.userId) {
+        next();
+    } else {
+        res.redirect('/login');
+    }
+};
 
 // Routes
 app.get('/', (req, res) => {
@@ -53,6 +70,45 @@ app.get('/agenda', (req, res) => {
         });
     });
 });
+
+// AUTH ROUTES
+app.get('/login', (req, res) => {
+    if (req.session.userId) {
+        return res.redirect('/admin');
+    }
+    // Set error from query parameter if it exists
+    res.render('login', { title: 'Login Admin - OSIS SMA DIRA', error: req.query.error });
+});
+
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    db.get("SELECT * FROM users WHERE username = ?", [username], async (err, user) => {
+        if (err) {
+            console.error("Login error:", err.message);
+            return res.redirect('/login?error=Terjadi kesalahan sistem');
+        }
+        if (!user) {
+            return res.redirect('/login?error=Username atau password salah');
+        }
+        
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (isMatch) {
+            req.session.userId = user.id;
+            req.session.username = user.username;
+            res.redirect('/admin');
+        } else {
+            res.redirect('/login?error=Username atau password salah');
+        }
+    });
+});
+
+app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/login');
+});
+
+// Protect all admin routes
+app.use('/admin', requireAuth);
 
 // ADMIN ROUTES
 app.get('/admin', (req, res) => {

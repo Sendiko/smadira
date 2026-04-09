@@ -1,6 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const fs = require('fs');
+const bcrypt = require('bcryptjs');
 
 // Ensure db directory exists
 const dbDir = path.join(__dirname, '../db');
@@ -61,6 +62,32 @@ const db = new sqlite3.Database(dbPath, (err) => {
                             stmt.run("Andi Pratama", "Kesenian & Olahraga", "Anggota Sekbid");
                             stmt.finalize();
                             console.log("Berhasil: Data palsu (dummy) untuk tabel 'pengurus' telah ditambahkan.");
+                        }
+                    });
+                }
+            });
+
+            // 3. Create table 'users'
+            db.run(`CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT UNIQUE NOT NULL,
+                password TEXT NOT NULL
+            )`, (err) => {
+                if (err) {
+                    console.error("Error creating users table:", err.message);
+                } else {
+                    // Cek apakah tabel kosong, jika iya maka tambahkan admin default
+                    db.get("SELECT COUNT(*) AS count FROM users", async (err, row) => {
+                        if (row && row.count === 0) {
+                            const salt = await bcrypt.genSalt(10);
+                            const hashedPassword = await bcrypt.hash("admin123", salt);
+                            db.run("INSERT INTO users (username, password) VALUES (?, ?)", ["admin", hashedPassword], (err) => {
+                                if (err) {
+                                    console.error("Error inserting admin user:", err.message);
+                                } else {
+                                    console.log("Berhasil: Data admin default telah ditambahkan (admin / admin123).");
+                                }
+                            });
                         }
                     });
                 }
