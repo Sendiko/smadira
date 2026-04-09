@@ -90,7 +90,7 @@ app.post('/login', (req, res) => {
         if (!user) {
             return res.redirect('/login?error=Username atau password salah');
         }
-        
+
         const isMatch = await bcrypt.compare(password, user.password);
         if (isMatch) {
             req.session.userId = user.id;
@@ -117,7 +117,7 @@ app.get('/admin', (req, res) => {
             console.error(err.message);
             prokers = [];
         }
-        res.render('admin', {
+        res.render('admin/index', {
             title: 'Manajemen Data Proker - OSIS SMA DIRA',
             prokers: prokers
         });
@@ -148,12 +148,12 @@ app.post('/admin/proker/delete/:id', (req, res) => {
 
 // ADMIN PENGURUS ROUTES
 app.get('/admin/pengurus', (req, res) => {
-    db.all("SELECT * FROM pengurus ORDER BY id DESC", [], (err, pengurus) => {
+    db.all("SELECT * FROM pengurus ORDER BY id ASC", [], (err, pengurus) => {
         if (err) {
             console.error(err.message);
             pengurus = [];
         }
-        res.render('admin_pengurus', {
+        res.render('admin/pengurus/index', {
             title: 'Manajemen Anggota - OSIS SMA DIRA',
             pengurus: pengurus
         });
@@ -190,7 +190,7 @@ app.get('/admin/pengurus/edit/:id', (req, res) => {
             console.error(err ? err.message : "Pengurus not found");
             return res.redirect('/admin/pengurus');
         }
-        res.render('admin_pengurus_edit', {
+        res.render('admin/pengurus/edit', {
             title: 'Edit Anggota - OSIS SMA DIRA',
             pengurus: row
         });

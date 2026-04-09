@@ -44,7 +44,7 @@
                 <i class="uil uil-arrow-left text-2xl mr-4 group-hover:-translate-x-2 transition-transform"></i> Kembali
                 ke Depan
             </a>
-            
+
             <a href="/logout"
                 class="flex items-center px-6 py-4 text-red-500 hover:bg-red-50 hover:text-red-700 rounded-[1.25rem] font-bold tracking-wide transition-colors mt-2 group">
                 <i class="uil uil-sign-out-alt text-2xl mr-4 group-hover:translate-x-2 transition-transform"></i> Keluar
@@ -78,7 +78,8 @@
             <div class="mx-auto space-y-12">
 
                 <div class="mb-4">
-                    <a href="/admin/pengurus" class="inline-flex items-center gap-2 text-primary font-bold hover:-translate-x-1 transition-transform">
+                    <a href="/admin/pengurus"
+                        class="inline-flex items-center gap-2 text-primary font-bold hover:-translate-x-1 transition-transform">
                         <i class="uil uil-arrow-left"></i> Kembali ke Katalog
                     </a>
                 </div>
@@ -93,12 +94,14 @@
                         <h2 class="text-2xl font-display font-bold text-gray-900 tracking-tight">Edit Data Tim</h2>
                     </div>
 
-                    <form action="/admin/pengurus/edit/<%= pengurus.id %>" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <form action="/admin/pengurus/edit/<%= pengurus.id %>" method="POST"
+                        class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="space-y-3">
                             <label for="nama"
                                 class="block text-sm font-bold text-gray-700 uppercase tracking-widest pl-2">Nama
                                 Lengkap</label>
-                            <input type="text" id="nama" name="nama" value="<%= pengurus.nama %>" required placeholder="Contoh: Raden Patah"
+                            <input type="text" id="nama" name="nama" value="<%= pengurus.nama %>" required
+                                placeholder="Contoh: Raden Patah"
                                 class="w-full px-6 py-4 bg-surface-container-low border-2 border-transparent rounded-[1.5rem] focus:border-surface-tint/40 focus:bg-surface-container-lowest outline-none transition-all font-medium text-gray-900 shadow-inner">
                         </div>
 
@@ -106,7 +109,8 @@
                             <label for="divisi"
                                 class="block text-sm font-bold text-gray-700 uppercase tracking-widest pl-2">Divisi
                                 Organisasi</label>
-                            <input type="text" id="divisi" name="divisi" value="<%= pengurus.divisi %>" required placeholder="Contoh: Inti, Humas"
+                            <input type="text" id="divisi" name="divisi" value="<%= pengurus.divisi %>" required
+                                placeholder="Contoh: Inti, Humas"
                                 class="w-full px-6 py-4 bg-surface-container-low border-2 border-transparent rounded-[1.5rem] focus:border-surface-tint/40 focus:bg-surface-container-lowest outline-none transition-all font-medium text-gray-900 shadow-inner">
                         </div>
 
@@ -114,7 +118,8 @@
                             <label for="jabatan"
                                 class="block text-sm font-bold text-gray-700 uppercase tracking-widest pl-2">Jabatan
                                 (Fungsional)</label>
-                            <input type="text" id="jabatan" name="jabatan" value="<%= pengurus.jabatan %>" required placeholder="Contoh: Ketua, Anggota"
+                            <input type="text" id="jabatan" name="jabatan" value="<%= pengurus.jabatan %>" required
+                                placeholder="Contoh: Ketua, Anggota"
                                 class="w-full px-6 py-4 bg-surface-container-low border-2 border-transparent rounded-[1.5rem] focus:border-surface-tint/40 focus:bg-surface-container-lowest outline-none transition-all font-medium text-gray-900 shadow-inner">
                         </div>
 

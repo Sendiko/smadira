@@ -57,12 +57,40 @@ const db = new sqlite3.Database(dbPath, (err) => {
                     db.get("SELECT COUNT(*) AS count FROM pengurus", (err, row) => {
                         if (row && row.count === 0) {
                             const stmt = db.prepare("INSERT INTO pengurus (nama, divisi, jabatan) VALUES (?, ?, ?)");
+                            
+                            // Inti
                             stmt.run("Rizky Sendiko", "Inti", "Ketua Umum");
                             stmt.run("Velarina Nurmalakana", "Inti", "Wakil Ketua Umum");
                             stmt.run("Budi Santoso", "Inti", "Sekertaris Umum");
                             stmt.run("Atthariq Maulana", "Inti", "Bendahara Umum");
+
+                            // Pembinaan Organisasi & Kader & Wawasan Kebangsaan
                             stmt.run("Siti Aminah", "Pembinaan Organisasi", "Ketua Sekbid");
-                            stmt.run("Andi Pratama", "Kesenian & Olahraga", "Anggota Sekbid");
+                            stmt.run("Rafi Ahmad", "Pembinaan Organisasi", "Wakil Ketua Sekbid");
+                            stmt.run("Nadia Fitri", "Pembinaan Organisasi", "Anggota Sekbid");
+                            stmt.run("Farhan Hakim", "Pembinaan Organisasi", "Anggota Sekbid");
+                            stmt.run("Aulia Rahma", "Pembinaan Organisasi", "Anggota Sekbid");
+
+                            // Kesenian & Olahraga
+                            stmt.run("Andi Pratama", "Kesenian & Olahraga", "Ketua Sekbid");
+                            stmt.run("Bima Sakti", "Kesenian & Olahraga", "Wakil Ketua Sekbid");
+                            stmt.run("Clara Shinta", "Kesenian & Olahraga", "Anggota Sekbid");
+                            stmt.run("Dimas Anggara", "Kesenian & Olahraga", "Anggota Sekbid");
+                            stmt.run("Eka Putri", "Kesenian & Olahraga", "Anggota Sekbid");
+
+                            // Humas & TIK
+                            stmt.run("Faisal Tanjung", "Humas & TIK", "Ketua Sekbid");
+                            stmt.run("Gina Anindya", "Humas & TIK", "Wakil Ketua Sekbid");
+                            stmt.run("Hendra Saputra", "Humas & TIK", "Anggota Sekbid");
+                            stmt.run("Intan Permata", "Humas & TIK", "Anggota Sekbid");
+                            stmt.run("Joko Susilo", "Humas & TIK", "Anggota Sekbid");
+
+                            // Kewirausahaan
+                            stmt.run("Kiki Amalia", "Kewirausahaan", "Ketua Sekbid");
+                            stmt.run("Lukman Hakim", "Kewirausahaan", "Wakil Ketua Sekbid");
+                            stmt.run("Mega Puspita", "Kewirausahaan", "Anggota Sekbid");
+                            stmt.run("Nurul Hidayah", "Kewirausahaan", "Anggota Sekbid");
+
                             stmt.finalize();
                             console.log("Berhasil: Data palsu (dummy) untuk tabel 'pengurus' telah ditambahkan.");
                         }
