@@ -37,4 +37,53 @@ document.addEventListener('DOMContentLoaded', () => {
         adminSidebarOverlay.addEventListener('click', toggleAdminSidebar);
         if (adminSidebarCloseBtn) adminSidebarCloseBtn.addEventListener('click', toggleAdminSidebar);
     }
+
+    // --- Photo Upload Preview ---
+    function initPhotoUpload(inputId, previewId, placeholderId, dropZoneId) {
+        const input = document.getElementById(inputId);
+        const preview = document.getElementById(previewId);
+        const placeholder = document.getElementById(placeholderId);
+        const dropZone = document.getElementById(dropZoneId);
+        if (!input || !preview || !dropZone) return;
+
+        function showPreview(file) {
+            if (!file || !file.type.startsWith('image/')) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                preview.src = e.target.result;
+                preview.classList.remove('hidden');
+                if (placeholder) placeholder.classList.add('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        input.addEventListener('change', () => {
+            if (input.files && input.files[0]) showPreview(input.files[0]);
+        });
+
+        // Drag-and-drop
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('border-primary', 'bg-primary-fixed/10');
+        });
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('border-primary', 'bg-primary-fixed/10');
+        });
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-primary', 'bg-primary-fixed/10');
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                // Transfer to file input
+                const dt = new DataTransfer();
+                dt.items.add(file);
+                input.files = dt.files;
+                showPreview(file);
+            }
+        });
+    }
+
+    initPhotoUpload('create-photo', 'create-preview', 'create-placeholder', 'create-drop-zone');
+    initPhotoUpload('edit-photo', 'edit-preview', 'edit-placeholder', 'edit-drop-zone');
 });
+

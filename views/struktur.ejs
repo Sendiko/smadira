@@ -56,7 +56,7 @@
 
                             <div class="relative w-32 h-32 mx-auto mb-8">
                                 <div class="absolute inset-0 bg-gradient-135 <%= p.divisi === 'Inti' ? 'from-tertiary-dim to-tertiary-container' : 'from-primary-dim to-primary-container' %> rounded-full blur-xl opacity-40 group-hover:opacity-70 transition-opacity duration-500"></div>
-                                <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(p.nama) %>&background=efedf3&color=00103e&size=150&bold=true" alt="<%= p.nama %>" class="relative w-full h-full rounded-full object-cover shadow-ambient border-[6px] border-surface-container-lowest">
+                                <img src="<% if(p.image) { %><%= p.image %><% } else { %>https://ui-avatars.com/api/?name=<%= encodeURIComponent(p.nama) %>&background=efedf3&color=00103e&size=150&bold=true<% } %>" alt="<%= p.nama %>" class="relative w-full h-full rounded-full object-cover shadow-ambient border-[6px] border-surface-container-lowest">
                             </div>
                             
                             <div class="text-center flex-grow">
@@ -64,10 +64,22 @@
                                 <p class="text-primary font-bold text-sm tracking-wide uppercase"><%= p.jabatan %></p>
                             </div>
                             
+                            <% if(p.phone || p.instagram) { %>
                             <div class="mt-8 pt-8 border-t border-surface-variant/20 flex justify-center gap-4 opacity-50 group-hover:opacity-100 transition-opacity">
-                                <button class="w-12 h-12 rounded-full bg-surface-container text-gray-500 hover:bg-primary hover:text-white transition-all flex items-center justify-center shadow-sm"><i class="uil uil-envelope text-xl"></i></button>
-                                <button class="w-12 h-12 rounded-full bg-surface-container text-gray-500 hover:bg-primary hover:text-white transition-all flex items-center justify-center shadow-sm"><i class="uil uil-instagram text-xl"></i></button>
+                                <% if(p.phone) { %>
+                                <a href="https://wa.me/<%= p.phone.replace(/[^0-9]/g,'') %>" target="_blank"
+                                    class="w-12 h-12 rounded-full bg-surface-container text-gray-500 hover:bg-primary hover:text-white transition-all flex items-center justify-center shadow-sm" title="WhatsApp <%= p.phone %>">
+                                    <i class="uil uil-whatsapp text-xl"></i>
+                                </a>
+                                <% } %>
+                                <% if(p.instagram) { %>
+                                <a href="https://instagram.com/<%= p.instagram.replace('@','') %>" target="_blank"
+                                    class="w-12 h-12 rounded-full bg-surface-container text-gray-500 hover:bg-primary hover:text-white transition-all flex items-center justify-center shadow-sm" title="Instagram <%= p.instagram %>">
+                                    <i class="uil uil-instagram text-xl"></i>
+                                </a>
+                                <% } %>
                             </div>
+                            <% } %>
                         </div>
                     <% }); %>
                 <% } else { %>

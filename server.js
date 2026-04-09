@@ -1,8 +1,30 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
+const multer = require('multer');
 const db = require('./config/database');
+
+// --- Multer setup for pengurus photo uploads ---
+const uploadsDir = path.join(__dirname, 'public/uploads/pengurus');
+if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => cb(null, uploadsDir),
+    filename: (req, file, cb) => {
+        const ext = path.extname(file.originalname);
+        cb(null, `pengurus-${Date.now()}${ext}`);
+    }
+});
+const upload = multer({
+    storage,
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype.startsWith('image/')) cb(null, true);
+        else cb(new Error('Only image files are allowed'));
+    }
+});
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -160,10 +182,12 @@ app.get('/admin/pengurus', (req, res) => {
     });
 });
 
-app.post('/admin/pengurus', (req, res) => {
-    const { nama, divisi, jabatan } = req.body;
-    db.run("INSERT INTO pengurus (nama, divisi, jabatan) VALUES (?, ?, ?)",
-        [nama, divisi, jabatan], function (err) {
+app.post('/admin/pengurus', upload.single('photo'), (req, res) => {
+    const { nama, divisi, jabatan, image, phone, instagram } = req.body;
+    // Prefer uploaded file; fall back to URL field
+    const imagePath = req.file ? `/uploads/pengurus/${req.file.filename}` : (image || null);
+    db.run("INSERT INTO pengurus (nama, divisi, jabatan, image, phone, instagram) VALUES (?, ?, ?, ?, ?, ?)",
+        [nama, divisi, jabatan, imagePath, phone || null, instagram || null], function (err) {
             if (err) {
                 console.error("Error inserting pengurus:", err.message);
             }
@@ -197,17 +221,32 @@ app.get('/admin/pengurus/edit/:id', (req, res) => {
     });
 });
 
-app.post('/admin/pengurus/edit/:id', (req, res) => {
+app.post('/admin/pengurus/edit/:id', upload.single('photo'), (req, res) => {
     const id = req.params.id;
-    const { nama, divisi, jabatan } = req.body;
-    db.run("UPDATE pengurus SET nama = ?, divisi = ?, jabatan = ? WHERE id = ?",
-        [nama, divisi, jabatan, id], function (err) {
-            if (err) {
-                console.error("Error updating pengurus:", err.message);
+    const { nama, divisi, jabatan, image, phone, instagram } = req.body;
+    // If a new file was uploaded, use it and delete the old local file if present
+    db.get("SELECT image FROM pengurus WHERE id = ?", [id], (err, row) => {
+        let imagePath;
+        if (req.file) {
+            imagePath = `/uploads/pengurus/${req.file.filename}`;
+            // Remove old uploaded file if it was local
+            if (row && row.image && row.image.startsWith('/uploads/')) {
+                const oldPath = path.join(__dirname, 'public', row.image);
+                fs.unlink(oldPath, () => {});
             }
-            res.redirect('/admin/pengurus');
+        } else {
+            // Keep existing image if URL field is blank, otherwise use URL field
+            imagePath = image || (row ? row.image : null);
         }
-    );
+        db.run("UPDATE pengurus SET nama = ?, divisi = ?, jabatan = ?, image = ?, phone = ?, instagram = ? WHERE id = ?",
+            [nama, divisi, jabatan, imagePath, phone || null, instagram || null, id], function (err) {
+                if (err) {
+                    console.error("Error updating pengurus:", err.message);
+                }
+                res.redirect('/admin/pengurus');
+            }
+        );
+    });
 });
 
 // Start server

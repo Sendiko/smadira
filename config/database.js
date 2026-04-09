@@ -48,8 +48,15 @@ const db = new sqlite3.Database(dbPath, (err) => {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 nama TEXT NOT NULL,
                 divisi TEXT NOT NULL,
-                jabatan TEXT NOT NULL
+                jabatan TEXT NOT NULL,
+                image TEXT,
+                phone TEXT,
+                instagram TEXT
             )`, (err) => {
+                // Migration: add new columns if they don't exist yet (for existing DBs)
+                db.run(`ALTER TABLE pengurus ADD COLUMN image TEXT`, () => {});
+                db.run(`ALTER TABLE pengurus ADD COLUMN phone TEXT`, () => {});
+                db.run(`ALTER TABLE pengurus ADD COLUMN instagram TEXT`, () => {});
                 if (err) {
                     console.error("Error creating pengurus table:", err.message);
                 } else {
