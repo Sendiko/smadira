@@ -139,9 +139,10 @@
                         <div class="col-span-1 md:col-span-2 space-y-3">
                             <label class="block text-sm font-bold text-gray-700 uppercase tracking-widest pl-2">Foto
                                 Anggota</label>
+                            <!-- File input lives OUTSIDE the drop zone to avoid click-bubble loop -->
+                            <input type="file" id="create-photo" name="photo" accept="image/*" class="hidden">
                             <div id="create-drop-zone"
-                                class="relative flex flex-col items-center justify-center w-full min-h-[12rem] bg-surface-container-low border-2 border-dashed border-surface-variant rounded-[1.5rem] cursor-pointer hover:border-primary hover:bg-primary-fixed/10 transition-all group overflow-hidden"
-                                onclick="document.getElementById('create-photo').click()">
+                                class="relative flex flex-col items-center justify-center w-full min-h-[12rem] bg-surface-container-low border-2 border-dashed border-surface-variant rounded-[1.5rem] cursor-pointer hover:border-primary hover:bg-primary-fixed/10 transition-all group overflow-hidden">
                                 <!-- Preview -->
                                 <img id="create-preview" src="" alt="preview"
                                     class="absolute inset-0 w-full h-full object-cover rounded-[1.4rem] hidden">
@@ -153,13 +154,22 @@
                                     <p class="font-bold text-gray-500 text-sm">Klik atau seret foto ke sini</p>
                                     <p class="text-xs text-gray-400">JPG, PNG, WEBP · Maks. 5 MB</p>
                                 </div>
-                                <!-- Overlay on hover when no image -->
-                                <input type="file" id="create-photo" name="photo" accept="image/*" class="hidden">
+                                <!-- Change overlay (shown on hover when preview is active) -->
+                                <div id="create-photo-overlay" class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-[1.4rem] items-center justify-center pointer-events-none z-20 hidden">
+                                    <div class="flex flex-col items-center gap-2 text-white">
+                                        <i class="uil uil-camera-change text-4xl"></i>
+                                        <p class="text-sm font-bold">Ganti Foto</p>
+                                    </div>
+                                </div>
                             </div>
+                            <button type="button" id="create-clear-photo"
+                                class="hidden text-xs text-red-500 font-bold hover:text-red-700 transition-colors pl-2">
+                                <i class="uil uil-times-circle mr-1"></i>Hapus Foto
+                            </button>
                             <!-- Fallback: URL -->
                             <details class="mt-1">
                                 <summary class="text-xs font-bold text-gray-400 cursor-pointer pl-2 hover:text-primary transition-colors">Atau gunakan URL foto eksternal</summary>
-                                <input type="url" id="image" name="image" placeholder="https://..."
+                                <input type="url" id="image-url" name="image" placeholder="https://..."
                                     class="mt-2 w-full px-6 py-4 bg-surface-container-low border-2 border-transparent rounded-[1.5rem] focus:border-surface-tint/40 focus:bg-surface-container-lowest outline-none transition-all font-medium text-gray-900 shadow-inner text-sm">
                             </details>
                         </div>

@@ -1,3 +1,4 @@
 package-lock.json
 db/osis.sqlite
+public/uploads
 node_modules

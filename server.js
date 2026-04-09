@@ -26,6 +26,26 @@ const upload = multer({
     }
 });
 
+// --- Multer setup for proker photo uploads ---
+const prokerUploadsDir = path.join(__dirname, 'public/uploads/proker');
+if (!fs.existsSync(prokerUploadsDir)) fs.mkdirSync(prokerUploadsDir, { recursive: true });
+
+const prokerStorage = multer.diskStorage({
+    destination: (req, file, cb) => cb(null, prokerUploadsDir),
+    filename: (req, file, cb) => {
+        const ext = path.extname(file.originalname);
+        cb(null, `proker-${Date.now()}${ext}`);
+    }
+});
+const uploadProker = multer({
+    storage: prokerStorage,
+    limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype.startsWith('image/')) cb(null, true);
+        else cb(new Error('Only image files are allowed'));
+    }
+});
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -93,6 +113,31 @@ app.get('/agenda', (req, res) => {
     });
 });
 
+app.get('/agenda/:id', (req, res) => {
+    const id = req.params.id;
+    db.get("SELECT * FROM proker WHERE id = ?", [id], (err, proker) => {
+        if (err || !proker) {
+            console.error(err ? err.message : 'Proker not found');
+            return res.redirect('/agenda');
+        }
+
+        // Fetch Next and Previous for navigation
+        const prevQuery = "SELECT id, judul FROM proker WHERE (tanggal_pelaksanaan < ?) OR (tanggal_pelaksanaan = ? AND id < ?) ORDER BY tanggal_pelaksanaan DESC, id DESC LIMIT 1";
+        const nextQuery = "SELECT id, judul FROM proker WHERE (tanggal_pelaksanaan > ?) OR (tanggal_pelaksanaan = ? AND id > ?) ORDER BY tanggal_pelaksanaan ASC, id ASC LIMIT 1";
+
+        db.get(prevQuery, [proker.tanggal_pelaksanaan, proker.tanggal_pelaksanaan, proker.id], (err, prevProker) => {
+            db.get(nextQuery, [proker.tanggal_pelaksanaan, proker.tanggal_pelaksanaan, proker.id], (err, nextProker) => {
+                res.render('agenda-detail', {
+                    title: proker.judul + ' - OSIS SMA DIRA',
+                    proker: proker,
+                    prevProker: prevProker || null,
+                    nextProker: nextProker || null
+                });
+            });
+        });
+    });
+});
+
 // AUTH ROUTES
 app.get('/login', (req, res) => {
     if (req.session.userId) {
@@ -146,10 +191,11 @@ app.get('/admin', (req, res) => {
     });
 });
 
-app.post('/admin/proker', (req, res) => {
-    const { judul, deskripsi, tanggal_pelaksanaan } = req.body;
-    db.run("INSERT INTO proker (judul, deskripsi, tanggal_pelaksanaan) VALUES (?, ?, ?)",
-        [judul, deskripsi, tanggal_pelaksanaan], function (err) {
+app.post('/admin/proker', uploadProker.single('foto'), (req, res) => {
+    const { judul, deskripsi, paragraf, tanggal_pelaksanaan } = req.body;
+    const fotoPath = req.file ? `/uploads/proker/${req.file.filename}` : null;
+    db.run("INSERT INTO proker (judul, deskripsi, paragraf, foto, tanggal_pelaksanaan) VALUES (?, ?, ?, ?, ?)",
+        [judul, deskripsi, paragraf || null, fotoPath, tanggal_pelaksanaan], function (err) {
             if (err) {
                 console.error("Error inserting proker:", err.message);
             }
@@ -160,11 +206,18 @@ app.post('/admin/proker', (req, res) => {
 
 app.post('/admin/proker/delete/:id', (req, res) => {
     const id = req.params.id;
-    db.run("DELETE FROM proker WHERE id = ?", id, function (err) {
-        if (err) {
-            console.error("Error deleting proker:", err.message);
+    // Delete the associated photo file if it's a local upload
+    db.get("SELECT foto FROM proker WHERE id = ?", [id], (err, row) => {
+        if (row && row.foto && row.foto.startsWith('/uploads/')) {
+            const oldPath = path.join(__dirname, 'public', row.foto);
+            fs.unlink(oldPath, () => {});
         }
-        res.redirect('/admin');
+        db.run("DELETE FROM proker WHERE id = ?", id, function (err) {
+            if (err) {
+                console.error("Error deleting proker:", err.message);
+            }
+            res.redirect('/admin');
+        });
     });
 });
 

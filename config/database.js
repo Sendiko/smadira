@@ -24,18 +24,24 @@ const db = new sqlite3.Database(dbPath, (err) => {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 judul TEXT NOT NULL,
                 deskripsi TEXT,
+                paragraf TEXT,
+                foto TEXT,
                 tanggal_pelaksanaan TEXT NOT NULL
             )`, (err) => {
                 if (err) {
                     console.error("Error creating proker table:", err.message);
                 } else {
+                    // Migration: add new columns if they don't exist yet (for existing DBs)
+                    db.run(`ALTER TABLE proker ADD COLUMN paragraf TEXT`, () => {});
+                    db.run(`ALTER TABLE proker ADD COLUMN foto TEXT`, () => {});
+
                     // Cek apakah tabel kosong, jika iya maka tambahkan dummy data
                     db.get("SELECT COUNT(*) AS count FROM proker", (err, row) => {
                         if (row && row.count === 0) {
-                            const stmt = db.prepare("INSERT INTO proker (judul, deskripsi, tanggal_pelaksanaan) VALUES (?, ?, ?)");
-                            stmt.run("LDKS Pengurus Baru", "Latihan Dasar Kepemimpinan untuk pengurus periode ini.", "2026-05-20");
-                            stmt.run("Class Meeting Pekan Raya", "Kompetisi olahraga dan seni antar kelas setelah ujian akhir.", "2026-06-12");
-                            stmt.run("Pensi Kemerdekaan", "Pentas seni menyambut kemerdekaan dengan berbagai lomba.", "2026-08-16");
+                            const stmt = db.prepare("INSERT INTO proker (judul, deskripsi, paragraf, tanggal_pelaksanaan) VALUES (?, ?, ?, ?)");
+                            stmt.run("LDKS Pengurus Baru", "Latihan Dasar Kepemimpinan untuk pengurus periode ini.", "Kegiatan LDKS (Latihan Dasar Kepemimpinan Siswa) merupakan agenda rutin tahunan yang dirancang khusus untuk membekali pengurus OSIS baru dengan kompetensi kepemimpinan, kedisiplinan, dan wawasan organisasi. Selama beberapa hari penuh, peserta akan mengikuti serangkaian sesi pelatihan intensif yang mencakup manajemen waktu, pengambilan keputusan, serta membangun komunikasi efektif di dalam tim.", "2026-05-20");
+                            stmt.run("Class Meeting Pekan Raya", "Kompetisi olahraga dan seni antar kelas setelah ujian akhir.", "Class Meeting Pekan Raya adalah perayaan semangat kompetisi dan kreativitas seluruh siswa SMA DIRA. Digelar setelah selesainya ujian akhir semester, kegiatan ini menghadirkan berbagai cabang lomba mulai dari futsal, basket, voli, hingga kompetisi seni seperti menyanyi dan menggambar. Acara ini menjadi ajang pemersatu antar kelas dan angkatan.", "2026-06-12");
+                            stmt.run("Pensi Kemerdekaan", "Pentas seni menyambut kemerdekaan dengan berbagai lomba.", "Pentas Seni Kemerdekaan adalah momen puncak peringatan Hari Kemerdekaan Republik Indonesia di lingkungan SMA DIRA. OSIS menghadirkan panggung hiburan berbalut semangat nasionalisme dengan penampilan band, tari tradisional, drama musikal, dan berbagai perlombaan bernuansa merah-putih. Seluruh warga sekolah diajak untuk merayakan kemerdekaan dengan rasa syukur dan kebanggaan.", "2026-08-16");
                             stmt.finalize();
                             console.log("Berhasil: Data palsu (dummy) untuk tabel 'proker' telah ditambahkan.");
                         }

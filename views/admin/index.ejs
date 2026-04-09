@@ -89,7 +89,7 @@
                         <h2 class="text-2xl font-display font-bold text-gray-900 tracking-tight">Draft Agenda Baru</h2>
                     </div>
 
-                    <form action="/admin/proker" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <form action="/admin/proker" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="space-y-3">
                             <label for="judul"
                                 class="block text-sm font-bold text-gray-700 uppercase tracking-widest pl-2">Judul
@@ -108,11 +108,48 @@
 
                         <div class="col-span-1 md:col-span-2 space-y-3">
                             <label for="deskripsi"
-                                class="block text-sm font-bold text-gray-700 uppercase tracking-widest pl-2">Konteks &
-                                Deksripsi</label>
-                            <textarea id="deskripsi" name="deskripsi" rows="3" required
-                                placeholder="Masukkan detail operasional untuk arsip ini..."
+                                class="block text-sm font-bold text-gray-700 uppercase tracking-widest pl-2">Deskripsi
+                                Singkat</label>
+                            <textarea id="deskripsi" name="deskripsi" rows="2" required
+                                placeholder="Ringkasan singkat agenda..."
                                 class="w-full px-6 py-4 bg-surface-container-low border-2 border-transparent rounded-[1.5rem] focus:border-surface-tint/40 focus:bg-surface-container-lowest outline-none transition-all font-medium text-gray-900 shadow-inner resize-none"></textarea>
+                        </div>
+
+                        <div class="col-span-1 md:col-span-2 space-y-3">
+                            <label for="paragraf"
+                                class="block text-sm font-bold text-gray-700 uppercase tracking-widest pl-2">Paragraf
+                                Lengkap</label>
+                            <textarea id="paragraf" name="paragraf" rows="5"
+                                placeholder="Tuliskan deskripsi lengkap agenda di sini — latar belakang, tujuan, rangkaian kegiatan, dan informasi penting lainnya..."
+                                class="w-full px-6 py-4 bg-surface-container-low border-2 border-transparent rounded-[1.5rem] focus:border-surface-tint/40 focus:bg-surface-container-lowest outline-none transition-all font-medium text-gray-900 shadow-inner resize-none"></textarea>
+                        </div>
+
+                        <!-- Photo Upload Widget -->
+                        <div class="col-span-1 md:col-span-2 space-y-3">
+                            <label class="block text-sm font-bold text-gray-700 uppercase tracking-widest pl-2">Foto
+                                Agenda <span class="font-normal normal-case text-gray-400">(opsional)</span></label>
+                            <div id="proker-drop-zone"
+                                class="relative w-full border-2 border-dashed border-surface-variant rounded-[1.5rem] p-8 flex flex-col items-center justify-center gap-4 cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-all group">
+                                <!-- Preview image -->
+                                <img id="proker-photo-preview" src="" alt="Preview"
+                                    class="hidden w-full max-h-72 object-cover rounded-[1rem] mb-2">
+                                <!-- Placeholder -->
+                                <div id="proker-drop-placeholder" class="flex flex-col items-center gap-2">
+                                    <div
+                                        class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-primary text-3xl group-hover:scale-110 transition-transform">
+                                        <i class="uil uil-image-upload"></i>
+                                    </div>
+                                    <p class="text-gray-700 font-semibold">Klik atau seret foto ke sini</p>
+                                    <p class="text-xs text-gray-400 font-medium">JPG, PNG, WEBP — Maks. 10 MB</p>
+                                </div>
+                                <input type="file" id="proker-foto-input" name="foto" accept="image/*"
+                                    class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                            </div>
+                            <!-- Clear button -->
+                            <button type="button" id="proker-clear-photo"
+                                class="hidden text-xs text-red-500 font-bold hover:text-red-700 transition-colors pl-2">
+                                <i class="uil uil-times-circle mr-1"></i>Hapus Foto
+                            </button>
                         </div>
 
                         <div class="col-span-1 md:col-span-2 flex justify-end mt-4">
@@ -140,33 +177,47 @@
                         <% if(prokers && prokers.length> 0) { %>
                             <% prokers.forEach(function(proker) { %>
                                 <div
-                                    class="bg-surface-container-lowest rounded-[2rem] p-8 shadow-ambient flex flex-col md:flex-row gap-8 items-center group transition-transform hover:-translate-y-1">
-                                    <div class="flex-grow w-full md:w-auto">
-                                        <div
-                                            class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold text-tertiary-container bg-tertiary-fixed tracking-widest uppercase mb-4">
-                                            <%= new Intl.DateTimeFormat('id-ID', { day: 'numeric' , month: 'long'
-                                                }).format(new Date(proker.tanggal_pelaksanaan)) %>, <%= new
-                                                    Date(proker.tanggal_pelaksanaan).getFullYear() %>
-                                        </div>
-                                        <h3
-                                            class="text-2xl font-display font-bold text-gray-900 mb-2 tracking-tight group-hover:text-primary transition-colors">
-                                            <%= proker.judul %>
-                                        </h3>
-                                        <p class="text-gray-600 font-medium truncate max-w-2xl">
-                                            <%= proker.deskripsi %>
-                                        </p>
+                                    class="bg-surface-container-lowest rounded-[2rem] overflow-hidden shadow-ambient flex flex-col md:flex-row gap-0 group transition-transform hover:-translate-y-1">
+                                    <!-- Foto thumbnail -->
+                                    <% if (proker.foto) { %>
+                                    <div class="md:w-56 shrink-0">
+                                        <img src="<%= proker.foto %>" alt="<%= proker.judul %>"
+                                            class="w-full h-48 md:h-full object-cover">
                                     </div>
+                                    <% } %>
+                                    <div class="flex-1 p-8 flex flex-col md:flex-row items-start md:items-center gap-6">
+                                        <div class="flex-grow w-full md:w-auto">
+                                            <div
+                                                class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold text-tertiary-container bg-tertiary-fixed tracking-widest uppercase mb-4">
+                                                <%= new Intl.DateTimeFormat('id-ID', { day: 'numeric' , month: 'long'
+                                                    }).format(new Date(proker.tanggal_pelaksanaan)) %>, <%= new
+                                                        Date(proker.tanggal_pelaksanaan).getFullYear() %>
+                                            </div>
+                                            <h3
+                                                class="text-2xl font-display font-bold text-gray-900 mb-2 tracking-tight group-hover:text-primary transition-colors">
+                                                <%= proker.judul %>
+                                            </h3>
+                                            <p class="text-gray-600 font-medium truncate max-w-2xl">
+                                                <%= proker.deskripsi %>
+                                            </p>
+                                            <% if (proker.paragraf) { %>
+                                            <p class="text-xs text-gray-400 font-medium mt-1 flex items-center gap-1">
+                                                <i class="uil uil-file-alt"></i> Paragraf tersedia
+                                            </p>
+                                            <% } %>
+                                        </div>
 
-                                    <div class="shrink-0 flex items-center gap-4 font-mono text-gray-400 text-sm">
-                                        <span>ID-<%= proker.id.toString().padStart(4, '0' ) %></span>
-                                        <form action="/admin/proker/delete/<%= proker.id %>" method="POST"
-                                            class="inline"
-                                            onsubmit="return confirm('Sistem akan menghapus agenda ini secara permanen. Lanjutkan?');">
-                                            <button type="submit"
-                                                class="w-14 h-14 rounded-full bg-surface-container text-gray-500 hover:bg-error hover:text-white hover:shadow-lg transition-all flex items-center justify-center">
-                                                <i class="uil uil-trash-alt text-2xl"></i>
-                                            </button>
-                                        </form>
+                                        <div class="shrink-0 flex items-center gap-4 font-mono text-gray-400 text-sm">
+                                            <span>ID-<%= proker.id.toString().padStart(4, '0') %></span>
+                                            <form action="/admin/proker/delete/<%= proker.id %>" method="POST"
+                                                class="inline"
+                                                onsubmit="return confirm('Sistem akan menghapus agenda ini secara permanen. Lanjutkan?');">
+                                                <button type="submit"
+                                                    class="w-14 h-14 rounded-full bg-surface-container text-gray-500 hover:bg-error hover:text-white hover:shadow-lg transition-all flex items-center justify-center">
+                                                    <i class="uil uil-trash-alt text-2xl"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                                 <% }); %>
@@ -190,6 +241,60 @@
     </main>
 
     <script src="/js/main.js"></script>
+    <script>
+        // --- Proker photo upload widget ---
+        const prokerInput = document.getElementById('proker-foto-input');
+        const prokerPreview = document.getElementById('proker-photo-preview');
+        const prokerPlaceholder = document.getElementById('proker-drop-placeholder');
+        const prokerClear = document.getElementById('proker-clear-photo');
+        const prokerDropZone = document.getElementById('proker-drop-zone');
+
+        function showProkerPreview(file) {
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                prokerPreview.src = e.target.result;
+                prokerPreview.classList.remove('hidden');
+                prokerPlaceholder.classList.add('hidden');
+                prokerClear.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        prokerInput.addEventListener('change', () => {
+            if (prokerInput.files && prokerInput.files[0]) {
+                showProkerPreview(prokerInput.files[0]);
+            }
+        });
+
+        prokerClear.addEventListener('click', () => {
+            prokerInput.value = '';
+            prokerPreview.src = '';
+            prokerPreview.classList.add('hidden');
+            prokerPlaceholder.classList.remove('hidden');
+            prokerClear.classList.add('hidden');
+        });
+
+        prokerDropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            prokerDropZone.classList.add('border-primary', 'bg-primary/5');
+        });
+        prokerDropZone.addEventListener('dragleave', () => {
+            prokerDropZone.classList.remove('border-primary', 'bg-primary/5');
+        });
+        prokerDropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            prokerDropZone.classList.remove('border-primary', 'bg-primary/5');
+            const files = e.dataTransfer.files;
+            if (files && files[0] && files[0].type.startsWith('image/')) {
+                // Assign to input
+                const dt = new DataTransfer();
+                dt.items.add(files[0]);
+                prokerInput.files = dt.files;
+                showProkerPreview(files[0]);
+            }
+        });
+    </script>
 </body>
 
 </html>

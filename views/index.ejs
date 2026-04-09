@@ -196,29 +196,48 @@
                 <% if(prokers && prokers.length> 0) { %>
                     <% prokers.forEach(function(proker) { %>
                         <div
-                            class="bg-surface-container-lowest rounded-[2rem] p-10 shadow-ambient-hover transform transition-transform duration-300 hover:-translate-y-1">
-                            <!-- Metadata -->
-                            <div
-                                class="mb-6 inline-flex items-center px-4 py-2 bg-tertiary-fixed text-tertiary-container text-xs font-bold uppercase tracking-widest rounded-full">
-                                <%= new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long' }).format(new Date(proker.tanggal_pelaksanaan)) %>, <%= new Date(proker.tanggal_pelaksanaan).getFullYear() %>
+                            class="bg-surface-container-lowest rounded-[2rem] overflow-hidden shadow-ambient-hover transform transition-transform duration-300 hover:-translate-y-1">
+                            <!-- Cover photo -->
+                            <% if (proker.foto) { %>
+                            <div class="w-full h-64 overflow-hidden">
+                                <img src="<%= proker.foto %>" alt="<%= proker.judul %>"
+                                    class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
                             </div>
+                            <% } %>
 
-                            <!-- Hierarchy High Contrast: Title -->
-                            <h4 class="text-3xl font-display font-bold text-gray-900 mb-6 tracking-tight leading-tight">
-                                <%= proker.judul %>
-                            </h4>
+                            <div class="p-10">
+                                <!-- Metadata -->
+                                <div
+                                    class="mb-6 inline-flex items-center px-4 py-2 bg-tertiary-fixed text-tertiary-container text-xs font-bold uppercase tracking-widest rounded-full">
+                                    <%= new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long' }).format(new Date(proker.tanggal_pelaksanaan)) %>, <%= new Date(proker.tanggal_pelaksanaan).getFullYear() %>
+                                </div>
 
-                            <!-- The Body Text -->
-                            <p class="text-lg text-gray-600 font-medium leading-relaxed mb-10">
-                                <%= proker.deskripsi %>
-                            </p>
+                                <!-- Hierarchy High Contrast: Title -->
+                                <h4 class="text-3xl font-display font-bold text-gray-900 mb-4 tracking-tight leading-tight">
+                                    <%= proker.judul %>
+                                </h4>
 
-                            <!-- Detail Action -->
-                            <a href="#"
-                                class="inline-flex items-center text-primary font-bold text-sm tracking-wide uppercase group">
-                                Baca Selengkapnya
-                                <span class="w-8 h-px bg-primary ml-4 transition-all group-hover:w-16"></span>
-                            </a>
+                                <!-- Short description -->
+                                <p class="text-lg text-gray-600 font-medium leading-relaxed mb-4">
+                                    <%= proker.deskripsi %>
+                                </p>
+
+                                <!-- Full paragraf (if available) -->
+                                <% if (proker.paragraf) { %>
+                                <p class="text-base text-gray-500 leading-relaxed mb-8 border-l-4 border-surface-container pl-5">
+                                    <%= proker.paragraf %>
+                                </p>
+                                <% } else { %>
+                                <div class="mb-8"></div>
+                                <% } %>
+
+                                <!-- Detail Action -->
+                                <a href="/agenda/<%= proker.id %>"
+                                    class="inline-flex items-center text-primary font-bold text-sm tracking-wide uppercase group">
+                                    Baca Selengkapnya
+                                    <span class="w-8 h-px bg-primary ml-4 transition-all group-hover:w-16"></span>
+                                </a>
+                            </div>
                         </div>
                         <% }); %>
                             <% } else { %>

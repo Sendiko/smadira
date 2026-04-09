@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= proker.judul %> — OSIS SMA DIRA
+    </title>
+    <meta name="description" content="<%= proker.deskripsi %>">
+    <link href="/css/output.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <style>
+        .hero-cover {
+            position: relative;
+            width: 100%;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        .hero-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .hero-cover:hover img {
+            transform: scale(1.03);
+        }
+
+        .hero-cover::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.6) 100%);
+        }
+
+        .prose-body {
+            font-size: 1.125rem;
+            line-height: 1.85;
+            color: #4b5563;
+        }
+    </style>
+</head>
+
+<body class="bg-surface text-gray-900 font-sans antialiased overflow-x-hidden min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <nav
+        class="bg-surface/80 backdrop-blur-[20px] border-b border-surface-variant/30 z-50 sticky top-0 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-24">
+                <a href="/agenda" class="flex items-center gap-4 group">
+                    <div
+                        class="w-12 h-12 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary font-bold shadow-ambient group-hover:-translate-x-1 transition-all">
+                        <i class="uil uil-arrow-left text-2xl"></i>
+                    </div>
+                    <span
+                        class="font-display font-bold text-lg tracking-tight text-gray-700 group-hover:text-primary transition-colors">Semua
+                        Agenda</span>
+                </a>
+                <div class="hidden md:flex items-center gap-3">
+                    <span
+                        class="px-5 py-2 bg-surface-container-low rounded-full text-xs font-bold uppercase tracking-widest text-primary shadow-sm">Council
+                        Pulse</span>
+                </div>
+                <a href="/"
+                    class="hidden md:flex items-center gap-2 text-base font-bold text-gray-500 hover:text-primary transition-colors">
+                    <i class="uil uil-home-alt text-xl"></i> Beranda
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Cover Photo -->
+    <% if (proker.foto) { %>
+        <div class="hero-cover">
+            <img src="<%= proker.foto %>" alt="<%= proker.judul %>">
+            <div class="absolute bottom-0 left-0 right-0 z-10 px-6 pb-10 pt-20">
+                <div class="max-w-4xl mx-auto">
+                    <div
+                        class="inline-flex items-center px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-sm text-white text-xs font-bold uppercase tracking-widest mb-4">
+                        <i class="uil uil-calendar-alt mr-2"></i>
+                        <%= new Intl.DateTimeFormat('id-ID', { day: 'numeric' , month: 'long' , year: 'numeric'
+                            }).format(new Date(proker.tanggal_pelaksanaan)) %>
+                    </div>
+                    <h1
+                        class="text-3xl md:text-5xl font-display font-extrabold text-white tracking-tight leading-tight drop-shadow-lg">
+                        <%= proker.judul %>
+                    </h1>
+                </div>
+            </div>
+        </div>
+        <% } else { %>
+            <!-- No photo: gradient banner -->
+            <div
+                class="bg-gradient-135 from-primary to-primary-container text-white pt-20 pb-24 relative overflow-hidden">
+                <div class="absolute -top-32 -right-32 w-80 h-80 bg-white/5 rounded-full blur-3xl pointer-events-none">
+                </div>
+                <div class="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-3xl pointer-events-none">
+                </div>
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div
+                        class="inline-flex items-center px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-sm text-white/90 text-xs font-bold uppercase tracking-widest mb-6">
+                        <i class="uil uil-calendar-alt mr-2"></i>
+                        <%= new Intl.DateTimeFormat('id-ID', { day: 'numeric' , month: 'long' , year: 'numeric'
+                            }).format(new Date(proker.tanggal_pelaksanaan)) %>
+                    </div>
+                    <h1
+                        class="text-4xl md:text-6xl font-display font-extrabold text-white tracking-tight leading-[1.05] mb-4">
+                        <%= proker.judul %>
+                    </h1>
+                </div>
+            </div>
+            <% } %>
+
+                <!-- Main Article Body -->
+                <main class="flex-grow bg-surface">
+                    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+
+                        <article
+                            class="bg-surface-container-lowest rounded-[2.5rem] shadow-ambient-hover overflow-hidden">
+                            <div class="p-8 md:px-16 py-10 md:py-14">
+
+                                <!-- Date badge -->
+                                <div
+                                    class="inline-flex items-center px-4 py-2 bg-tertiary-fixed text-tertiary-container text-xs font-bold uppercase tracking-widest rounded-full pt-5 mb-8">
+                                    <i class="uil uil-calendar-alt mr-2"></i>
+                                    <%= new Intl.DateTimeFormat('id-ID', { weekday: 'long' , day: 'numeric' ,
+                                        month: 'long' , year: 'numeric' }).format(new Date(proker.tanggal_pelaksanaan))
+                                        %>
+                                </div>
+
+                                <% if (!proker.foto) { %>
+                                    <h2
+                                        class="text-3xl md:text-5xl font-display font-extrabold text-gray-900 tracking-tight leading-tight mb-8">
+                                        <%= proker.judul %>
+                                    </h2>
+                                    <% } %>
+
+                                        <!-- Divider -->
+                                        <div class="w-16 h-1.5 bg-primary rounded-full mb-8"></div>
+
+                                        <!-- Short description / lead -->
+                                        <p
+                                            class="text-xl md:text-2xl text-gray-700 font-semibold leading-relaxed mb-10 border-l-4 border-primary pl-6">
+                                            <%= proker.deskripsi %>
+                                        </p>
+
+                                        <!-- Full paragraf body -->
+                                        <% if (proker.paragraf) { %>
+                                            <div class="prose-body space-y-6">
+                                                <% proker.paragraf.split(/\n{2,}/).forEach(function(para) { if
+                                                    (para.trim()) { %>
+                                                    <p>
+                                                        <%= para.trim() %>
+                                                    </p>
+                                                    <% } }); %>
+                                            </div>
+                                            <% } else { %>
+                                                <div
+                                                    class="py-12 text-center rounded-[1.5rem] bg-surface-container-low">
+                                                    <i class="uil uil-file-alt text-4xl text-gray-300 mb-3 block"></i>
+                                                    <p class="text-gray-400 font-medium">Detail lengkap
+                                                        belum tersedia untuk agenda ini.</p>
+                                                </div>
+                                                <% } %>
+
+                                                    <!-- Bottom Meta -->
+                                                    <div
+                                                        class="mt-16 pt-10 border-t border-surface-variant/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+                                                        <div class="flex items-center gap-4">
+                                                            <div
+                                                                class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white text-xl shadow-ambient">
+                                                                <i class="uil uil-graduation-cap"></i>
+                                                            </div>
+                                                            <div>
+                                                                <p
+                                                                    class="text-xs font-bold text-primary uppercase tracking-widest">
+                                                                    Dipublikasikan oleh</p>
+                                                                <p class="font-display font-bold text-gray-900">
+                                                                    OSIS SMA DIRA</p>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="inline-flex items-center px-5 py-2.5 rounded-full bg-surface-container text-xs font-bold text-gray-500 uppercase tracking-widest">
+                                                            <i class="uil uil-tag mr-2"></i> Program Kerja
+                                                        </div>
+                                                    </div>
+                            </div>
+                        </article>
+
+                        <!-- Navigation Buttons -->
+                        <div class="mt-16 flex flex-col sm:flex-row gap-6 justify-between items-stretch">
+                            <% if (locals.prevProker) { %>
+                                <a href="/agenda/<%= prevProker.id %>"
+                                    class="flex-1 inline-flex items-center gap-5 p-8 py-6 bg-surface-container-lowest text-gray-700 font-bold rounded-[2rem] shadow-ambient hover:shadow-ambient-hover hover:-translate-y-1 transition-all group border border-surface-variant/10">
+                                    <div
+                                        class="w-12 h-12 flex-shrink-0 rounded-full bg-surface-container flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                                        <i class="uil uil-arrow-left text-2xl"></i>
+                                    </div>
+                                    <div class="flex flex-col items-start text-left overflow-hidden">
+                                        <span
+                                            class="text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-1">Sebelumnya</span>
+                                        <span class="text-base md:text-lg line-clamp-1 font-display tracking-tight">
+                                            <%= prevProker.judul %>
+                                        </span>
+                                    </div>
+                                </a>
+                                <% } else { %>
+                                    <div class="flex-1 hidden sm:block"></div>
+                                    <% } %>
+
+                                        <% if (locals.nextProker) { %>
+                                            <a href="/agenda/<%= nextProker.id %>"
+                                                class="flex-1 inline-flex items-center justify-end gap-5 p-8 py-6 bg-gradient-135 from-primary to-primary-container text-white font-bold rounded-[2rem] shadow-ambient hover:shadow-ambient-hover hover:-translate-y-1 transition-all group border border-white/10">
+                                                <div class="flex flex-col items-end text-right overflow-hidden">
+                                                    <span
+                                                        class="text-[10px] uppercase tracking-[0.2em] text-white/60 mb-1">Selanjutnya</span>
+                                                    <span
+                                                        class="text-base md:text-lg line-clamp-1 font-display tracking-tight text-white">
+                                                        <%= nextProker.judul %>
+                                                    </span>
+                                                </div>
+                                                <div
+                                                    class="w-12 h-12 flex-shrink-0 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-primary transition-all duration-300 text-white">
+                                                    <i class="uil uil-arrow-right text-2xl"></i>
+                                                </div>
+                                            </a>
+                                            <% } else { %>
+                                                <div class="flex-1 hidden sm:block"></div>
+                                                <% } %>
+                        </div>
+                    </div>
+                </main>
+
+                <!-- Footer -->
+                <footer class="py-12 bg-surface-container-lowest border-t border-surface-variant/20 text-center">
+                    <p class="text-sm text-gray-400 font-medium tracking-wide">&copy; 2026 OSIS SMA DIRA. Didesain
+                        dengan gaya The Academic Vanguard.</p>
+                </footer>
+
+                <script src="/js/main.js"></script>
+</body>
+
+</html>

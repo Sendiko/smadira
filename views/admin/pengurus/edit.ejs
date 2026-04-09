@@ -135,15 +135,6 @@
                         </div>
 
                         <div class="space-y-3">
-                            <label for="image"
-                                class="block text-sm font-bold text-gray-700 uppercase tracking-widest pl-2">URL
-                                Foto</label>
-                            <input type="url" id="image" name="image" value="<%= pengurus.image || '' %>"
-                                placeholder="https://..."
-                                class="w-full px-6 py-4 bg-surface-container-low border-2 border-transparent rounded-[1.5rem] focus:border-surface-tint/40 focus:bg-surface-container-lowest outline-none transition-all font-medium text-gray-900 shadow-inner">
-                        </div>
-
-                        <div class="space-y-3">
                             <label for="instagram"
                                 class="block text-sm font-bold text-gray-700 uppercase tracking-widest pl-2">Instagram
                                 Handle</label>
@@ -156,10 +147,11 @@
                         <div class="col-span-1 md:col-span-2 space-y-3">
                             <label class="block text-sm font-bold text-gray-700 uppercase tracking-widest pl-2">Foto
                                 Anggota</label>
+                            <!-- File input lives OUTSIDE the drop zone to avoid click-bubble loop -->
+                            <input type="file" id="edit-photo" name="photo" accept="image/*" class="hidden">
                             <div id="edit-drop-zone"
-                                class="relative flex flex-col items-center justify-center w-full min-h-[12rem] bg-surface-container-low border-2 border-dashed border-surface-variant rounded-[1.5rem] cursor-pointer hover:border-primary hover:bg-primary-fixed/10 transition-all group overflow-hidden"
-                                onclick="document.getElementById('edit-photo').click()">
-                                <!-- Preview -->
+                                class="relative flex flex-col items-center justify-center w-full min-h-[12rem] bg-surface-container-low border-2 border-dashed border-surface-variant rounded-[1.5rem] cursor-pointer hover:border-primary hover:bg-primary-fixed/10 transition-all group overflow-hidden">
+                                <!-- Preview: show existing image if available -->
                                 <% if(pengurus.image) { %>
                                 <img id="edit-preview" src="<%= pengurus.image %>" alt="preview"
                                     class="absolute inset-0 w-full h-full object-cover rounded-[1.4rem]">
@@ -175,7 +167,6 @@
                                     <p class="font-bold text-gray-500 text-sm">Klik untuk ganti foto</p>
                                     <p class="text-xs text-gray-400">JPG, PNG, WEBP · Maks. 5 MB</p>
                                 </div>
-                                <% if(pengurus.image) { %>
                                 <!-- Change overlay shown on hover when image exists -->
                                 <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-[1.4rem] flex items-center justify-center pointer-events-none z-20">
                                     <div class="flex flex-col items-center gap-2 text-white">
@@ -183,13 +174,15 @@
                                         <p class="text-sm font-bold">Ganti Foto</p>
                                     </div>
                                 </div>
-                                <% } %>
-                                <input type="file" id="edit-photo" name="photo" accept="image/*" class="hidden">
                             </div>
+                            <button type="button" id="edit-clear-photo"
+                                class="<%= pengurus.image ? '' : 'hidden' %> text-xs text-red-500 font-bold hover:text-red-700 transition-colors pl-2">
+                                <i class="uil uil-times-circle mr-1"></i>Hapus Foto
+                            </button>
                             <!-- Fallback: URL -->
                             <details class="mt-1">
                                 <summary class="text-xs font-bold text-gray-400 cursor-pointer pl-2 hover:text-primary transition-colors">Atau gunakan URL foto eksternal</summary>
-                                <input type="url" id="image" name="image" value="<% if(pengurus.image && !pengurus.image.startsWith('/uploads/')) { %><%= pengurus.image %><% } %>" placeholder="https://..."
+                                <input type="url" id="image-url" name="image" value="<% if(pengurus.image && !pengurus.image.startsWith('/uploads/')) { %><%= pengurus.image %><% } %>" placeholder="https://..."
                                     class="mt-2 w-full px-6 py-4 bg-surface-container-low border-2 border-transparent rounded-[1.5rem] focus:border-surface-tint/40 focus:bg-surface-container-lowest outline-none transition-all font-medium text-gray-900 shadow-inner text-sm">
                             </details>
                         </div>
