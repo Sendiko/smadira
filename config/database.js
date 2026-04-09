@@ -57,7 +57,10 @@ const db = new sqlite3.Database(dbPath, (err) => {
                     db.get("SELECT COUNT(*) AS count FROM pengurus", (err, row) => {
                         if (row && row.count === 0) {
                             const stmt = db.prepare("INSERT INTO pengurus (nama, divisi, jabatan) VALUES (?, ?, ?)");
-                            stmt.run("Admin OSIS (Budi)", "Inti", "Ketua Umum");
+                            stmt.run("Rizky Sendiko", "Inti", "Ketua Umum");
+                            stmt.run("Velarina Nurmalakana", "Inti", "Wakil Ketua Umum");
+                            stmt.run("Budi Santoso", "Inti", "Sekertaris Umum");
+                            stmt.run("Atthariq Maulana", "Inti", "Bendahara Umum");
                             stmt.run("Siti Aminah", "Pembinaan Organisasi", "Ketua Sekbid");
                             stmt.run("Andi Pratama", "Kesenian & Olahraga", "Anggota Sekbid");
                             stmt.finalize();
